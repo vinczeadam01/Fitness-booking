@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ${BACKEND_DOCKERFILE}
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ${BACKEND_SRC}:/usr/src/app
+    environment:
+      - NODE_ENV=development
+      - PORT=${BACKEND_PORT}
+      - MONGO_USER=${DB_USER}
+      - MONGO_PASSWORD=${DB_PASSWORD}
+      - MONGO_DB_NAME=${DB_NAME}
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mongo:latest
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - mongo_data:/data/db
+      - ./docker-configs/mongo/initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MONGO_INITDB_USER=${DB_USER}
+      - MONGO_INITDB_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_NAME}
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
