@@ -6,7 +6,8 @@ import AuthRoutes from "./routes/auth.routes";
 import passport from "passport";
 import PassportConfig from "./configs/passport.config";
 import bodyParser from "body-parser";
-import router from "./routes/auth.routes";
+import UserRoutes from "./routes/user.routes";
+import CourseRoutes from "./routes/course.routes";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,8 @@ app.use(passport.session());
 
 // routes
 app.use(AuthRoutes);
+app.use(UserRoutes);
+app.use(CourseRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -4,12 +4,10 @@ import {PassportStatic} from "passport";
 
 export default function passportConfig(passport: PassportStatic) {
     passport.serializeUser((user: Express.User, done: any) => {
-        console.log('user is serialized');
         done(null, user);
     });
 
     passport.deserializeUser((user: Express.User, done: any) => {
-        console.log('user is deserialized');
         done(null, user);
     });
 
