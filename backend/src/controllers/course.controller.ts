@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Request, Response} from 'express';
-import {Course} from "../models/Course";
+import {Course, ICourse} from "../models/Course";
+import {Document} from "mongoose";
 
 export default class CourseController {
     public getCourse: RequestHandler = (req, res, next) => {
@@ -44,7 +45,7 @@ export default class CourseController {
     }
 
     public addAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             course.addAppointment(req.body.date);
             course.save().then(course => {
                 res.status(200).send(course);
@@ -57,7 +58,7 @@ export default class CourseController {
     }
 
     public addUserToAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             course.addUserToAppointment(req.params.appointmentId, req.body.user);
             course.save().then(course => {
                 res.status(200).send(course);
@@ -70,7 +71,7 @@ export default class CourseController {
     }
 
     public listAppointments: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             res.status(200).send(course.listAppointments());
         }).catch(error => {
             res.status(500).send(error);
@@ -78,7 +79,7 @@ export default class CourseController {
     }
 
     public listUsersForAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             res.status(200).send(course.listUsersForAppointment(req.params.appointmentId));
         }).catch(error => {
             res.status(500).send(error);
@@ -86,7 +87,7 @@ export default class CourseController {
     }
 
     public updateAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             course.updateAppointment(req.params.appointmentId, req.body.date);
             course.save().then(course => {
                 res.status(200).send(course);
@@ -99,7 +100,7 @@ export default class CourseController {
     }
 
     public removeUserFromAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             course.removeUserFromAppointment(req.params.appointmentId, req.params.userId);
             course.save().then(course => {
                 res.status(200).send(course);
@@ -112,7 +113,7 @@ export default class CourseController {
     }
 
     public removeAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: Course) => {
+        Course.findById(req.params.id).then((course: any) => {
             course.removeAppointment(req.params.appointmentId);
             course.save().then(course => {
                 res.status(200).send(course);
