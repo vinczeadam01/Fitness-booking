@@ -1,0 +1,77 @@
+<div *ngIf="class">
+  <div class="panel mb-5">
+    <div class="float-right" *ngIf="this.authService.isAdmin()">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openEditDialog()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="deleteClass()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </div>
+    <div fxLayout fxLayoutGap="20">
+      <div fxFlex="30">
+        <img src="/assets/img/category-{{class.category.toLowerCase()}}.jpg" alt="Category photo" style="width: 100%">
+      </div>
+      <div>
+        <h1>{{class.name}}</h1>
+        <p>{{class.description}}</p>
+        <p>
+          <a [routerLink]="['/trainers', class.trainer._id]" class="trainer-link" fxLayout fxLayoutAlign="start center">
+            <img class="mini-avatar" [src]="class.trainer.img ?? '/assets/img/trainer-man.jpg'" alt="Trainer">
+            <span>{{class.trainer.name}}</span>
+          </a>
+        </p>
+        <p fxLayout fxLayoutAlign="start center" style="gap: 5px;"><mat-icon>schedule</mat-icon>{{class.duration}} minutes</p>
+        <p fxLayout fxLayoutAlign="start center" style="gap: 5px;"><mat-icon>groups</mat-icon>max {{class.capacity}} participant</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Appointments</h2>
+    <button mat-button color="primary" (click)="openAppointmentDialog()" *ngIf="authService.isAdmin()">Add appointment</button>
+
+    <table mat-table [dataSource]="class.appointments">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{ element.date | date:'medium' }} </td>
+      </ng-container>
+
+      <!-- Free spaces Column -->
+      <ng-container matColumnDef="freeSpaces">
+        <th mat-header-cell *matHeaderCellDef> Free spaces </th>
+        <td mat-cell *matCellDef="let element"> {{ class.capacity - element.registrations.length }} </td>
+      </ng-container>
+
+      <!-- Action Column for user -->
+      <ng-container matColumnDef="actionUser">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button color="primary" (click)="signUp(element._id)" [disabled]="class.capacity - element.registrations.length <= 0" *ngIf="!arraySome(element.registrations, this.authService.getUserId())">Sign up</button>
+          <button mat-button color="primary" (click)="cancel(element._id)" *ngIf="arraySome(element.registrations, this.authService.getUserId())">Cancel</button>
+        </td>
+      </ng-container>
+
+      <!-- Action Column for admin -->
+      <ng-container matColumnDef="actionAdmin">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button color="primary" (click)="openAppointmentDialog(element)">Edit</button>
+          <button mat-button color="warn" (click)="deleteAppointment(element._id)">Delete</button>
+          <button mat-button color="warn" (click)="viewAppointment(element._id)">View</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="appointmentsDisplayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: appointmentsDisplayColumns;"></tr>
+    </table>
+  </div>
+</div>

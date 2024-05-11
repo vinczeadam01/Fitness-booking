@@ -4,7 +4,9 @@ import {Document} from "mongoose";
 
 export default class CourseController {
     public getCourse: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then(course => {
+        // the course trainer is id of the trainer
+        // join the trainer to get the trainer details
+        Course.findById(req.params.id).populate('trainer').populate('appointments.registrations').then(course => {
             res.status(200).send(course);
         }).catch(error => {
             res.status(500).send(error);
@@ -12,7 +14,7 @@ export default class CourseController {
     }
 
     public getAllCourses: RequestHandler = (req, res, next) => {
-        Course.find().then(courses => {
+        Course.find().populate('trainer').then(courses => {
             res.status(200).send(courses);
         }).catch(error => {
             res.status(500).send(error);
@@ -48,49 +50,21 @@ export default class CourseController {
         Course.findById(req.params.id).then((course: any) => {
             course.addAppointment(req.body.date);
             course.save().then(course => {
-                res.status(200).send(course);
+                res.status(200).send(course.appointments[course.appointments.length - 1]);
             }).catch(error => {
                 res.status(500).send(error);
             });
-        }).catch(error => {
-            res.status(500).send(error);
-        });
-    }
-
-    public addUserToAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            course.addUserToAppointment(req.params.appointmentId, req.body.user);
-            course.save().then(course => {
-                res.status(200).send(course);
-            }).catch(error => {
-                res.status(500).send(error);
-            });
-        }).catch(error => {
-            res.status(500).send(error);
-        });
-    }
-
-    public listAppointments: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            res.status(200).send(course.listAppointments());
-        }).catch(error => {
-            res.status(500).send(error);
-        });
-    }
-
-    public listUsersForAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            res.status(200).send(course.listUsersForAppointment(req.params.appointmentId));
         }).catch(error => {
             res.status(500).send(error);
         });
     }
 
     public updateAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            course.updateAppointment(req.params.appointmentId, req.body.date);
+        Course.findById(req.params.courseId).then((course: any) => {
+            course.updateAppointment(req.params.id, req.body.date);
             course.save().then(course => {
-                res.status(200).send(course);
+                const appointment = course.appointments.find((a: any) => a._id == req.params.id);
+                res.status(200).send(appointment);
             }).catch(error => {
                 res.status(500).send(error);
             });
@@ -99,29 +73,16 @@ export default class CourseController {
         });
     }
 
-    public removeUserFromAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            course.removeUserFromAppointment(req.params.appointmentId, req.params.userId);
+    public deleteAppointment: RequestHandler = (req, res, next) => {
+        Course.findById(req.params.courseId).then((course: any) => {
+            course.removeAppointment(req.params.id);
             course.save().then(course => {
                 res.status(200).send(course);
             }).catch(error => {
-                res.status(500).send(error);
+                res.status(500).send('1');
             });
         }).catch(error => {
-            res.status(500).send(error);
-        });
-    }
-
-    public removeAppointment: RequestHandler = (req, res, next) => {
-        Course.findById(req.params.id).then((course: any) => {
-            course.removeAppointment(req.params.appointmentId);
-            course.save().then(course => {
-                res.status(200).send(course);
-            }).catch(error => {
-                res.status(500).send(error);
-            });
-        }).catch(error => {
-            res.status(500).send(error);
+            res.status(500).send('2');
         });
     }
 

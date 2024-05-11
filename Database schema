@@ -1,0 +1,35 @@
+User:
+{
+    _id: ObjectID,
+    email: string,
+    name: string,
+    password: string,
+    role: integer,
+    birth: date,
+    points: integer,
+    createdAt: Date,
+}
+
+Course:
+{
+    _id: ObjectID,
+    name: string,
+    descripion: string;
+    category: integer,
+    trainer: ObjectID (Reference for User),
+    capacity: integer,
+    duration: integer,
+    appointments: [
+        {
+            _id: string,
+            date: Date,
+            users: [
+                {
+                    userId: ObjectId,
+                    name: string
+                }
+            ]
+        }
+    ]
+
+}

@@ -1,0 +1,20 @@
+<div class="panel">
+  <div fxLayout fxLayoutGap="20">
+    <div>
+      <img class="avatar" [src]="trainer.img ?? '/assets/img/trainer-man.jpg'" alt="Trainer">
+      <form #uploadForm="ngForm" (ngSubmit)="upload()" enctype="multipart/form-data" *ngIf="this.authService.role > 1">
+        <input #fileInput type="file" (change)="onChange($event)" name="file">
+        <button mat-raised-button color="primary" type="submit">Upload</button>
+      </form>
+    </div>
+    <div>
+      <h1>{{trainer.name}}</h1>
+      <p>{{trainer.description}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel mt-5">
+  <h1>Classes</h1>
+  <classes-grid [items]="classes"></classes-grid>
+</div>

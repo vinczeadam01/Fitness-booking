@@ -11,6 +11,8 @@ export interface IUser extends Document {
     createdAt: Date;
 
     comparePassword: (password: string, callback: (error: Error | null, isMatch: boolean) => void) => void;
+
+    findTrainers: () => Promise<IUser[]>;
 }
 
 export const UserSchema = new Schema({
@@ -18,7 +20,7 @@ export const UserSchema = new Schema({
     password: {type: String, required: true},
     name: {type: String, required: true, trim: true, maxLength: 40},
     role: {type: Number, default: 0},
-    birthdate: {type: Date, required: true},
+    birthdate: {type: Date},
     points: {type: Number, default: 0},
     createdAt: { type: Date, default: Date.now },
 });
@@ -76,10 +78,8 @@ UserSchema.methods.comparePassword = function comparePassword(password: string, 
 /**
  * Statics functions
  */
-UserSchema.statics = {
-    findByEmail: async function findByEmail(email: string) {
-        return this.findOne({email});
-    },
-};
+UserSchema.statics.findTrainers = function findTrainers() {
+    return this.find({ role: 1 });
+}
 
 export const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);

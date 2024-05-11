@@ -1,0 +1,28 @@
+<div fxLayout.gt-md>
+  <div fxFlex="100">
+    <p fxLayout>
+      <mat-form-field appearance="outline" fxFlexFill>
+        <input matInput (input)="searchChanged($event)" type="text" placeholder="Search" />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </p>
+  </div>
+  <div *ngIf="this.authService.role > 1">
+    <button class="add-btn" mat-raised-button color="primary" (click)="openDialog('0ms', '0ms')">+ Add Trainer</button>
+  </div>
+</div>
+
+<div class="grid-container">
+  <div class="grid-item" *ngFor="let item of filteredItems">
+    <a [routerLink]="['/trainers', item._id]">
+      <mat-card>
+        <div class="card-banner">
+          <img class="trainer-img" [src]="item.img ?? '/assets/img/trainer-man.jpg'" alt="trainer">
+        </div>
+        <mat-card-content>
+          <mat-card-title>{{ item.name }}</mat-card-title>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  </div>
+</div>

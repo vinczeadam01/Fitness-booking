@@ -32,5 +32,19 @@ services:
       - MONGO_INITDB_DATABASE=${DB_NAME}
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ${FRONTEND_DOCKERFILE}
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    volumes:
+      - ${FRONTEND_SRC}:/usr/src/app
+    depends_on:
+      - backend
+#    command: bash
+#    stdin_open: true
+#    tty: true
+
 volumes:
   mongo_data:

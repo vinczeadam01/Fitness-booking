@@ -1,0 +1,11 @@
+<div fxLayout.gt-xs fxLayoutGap="20px">
+  <div class="panel sidebar" fxLayout="column">
+    <button mat-flat-button routerLink="/profile" routerLinkActive="mat-primary" [routerLinkActiveOptions]="{ exact: true }" >Profile</button>
+    <button mat-flat-button [routerLink]="[{ outlets: { profile: ['classes'] } }]" routerLinkActive="mat-primary">Classes</button>
+    <button mat-flat-button [routerLink]="[{ outlets: { profile: ['notification'] } }]" routerLinkActive="mat-primary">Notifications</button>
+    <button mat-flat-button [routerLink]="[{ outlets: { profile: ['delete'] } }]" routerLinkActive="mat-primary">Delete Account</button>
+  </div>
+  <div class="panel" fxFlex="100">
+    <router-outlet name="profile"></router-outlet>
+  </div>
+</div>

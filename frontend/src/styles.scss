@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+
+html, body { height: 100%; }
+body { margin: 0;font-family: Poppins, sans-serif !important; }
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.mat-bg-white,
+.bg-white {
+  background-color: #fff !important;
+}
+
+.mat-mdc-raised-button {
+  &.mat-p100 {
+    background-color: #eae8ff !important;
+    color: #673AB7 !important;
+  }
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: #fff !important;
+}
+
+.panel {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.panel img {
+  border-radius: 10px;
+}
+
+.mt-5 {
+  margin-top: 30px;
+}
+
+.mb-5 {
+  margin-bottom: 30px;
+}
+
+.me-3 {
+  margin-right: 10px;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-danger {
+  color: red;
+}

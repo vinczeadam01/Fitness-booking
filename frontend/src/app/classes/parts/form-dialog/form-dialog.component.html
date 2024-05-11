@@ -1,0 +1,53 @@
+<form (ngSubmit)="submit()">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <mat-dialog-content>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="classForm.name" name="name" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="classForm.description" name="description" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="classForm.category" name="category" required>
+            @for (category of Categories; track category) {
+              <mat-option [value]="category">{{ category }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Capacity</mat-label>
+          <input matInput [(ngModel)]="classForm.capacity" name="capacity" type="number" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Duration</mat-label>
+          <input matInput [(ngModel)]="classForm.duration" name="duration" type="number" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Trainer</mat-label>
+          <mat-select [(ngModel)]="classForm.trainer" name="trainer" required>
+            @for (trainer of trainerList; track trainer) {
+              <mat-option [value]="trainer.id">{{ trainer.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button cdkFocusInitial color="primary" type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>

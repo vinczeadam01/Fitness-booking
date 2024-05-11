@@ -1,7 +1,6 @@
 const roles = {
     USER: 1,
-    TRAINER: 2,
-    ADMIN: 3
+    ADMIN: 2
 }
 
 export default roles;

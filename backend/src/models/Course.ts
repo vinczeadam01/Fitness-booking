@@ -3,7 +3,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 export interface ICourse extends Document {
     name: string;
     description: string;
-    category: number;
+    category: string;
     trainer: string;
     capacity: number;
     duration: number;
@@ -16,19 +16,25 @@ export interface ICourse extends Document {
     updateAppointment(appointmentId: string, date: Date): void;
     removeUserFromAppointment(appointmentId: string, userId: string): void;
     removeAppointment(appointmentId: string): void;
+
 }
 
-export const CourseSchema = new Schema({
+interface CourseModel extends Model<ICourse> {
+    findByTrainer(trainerId: string): Promise<ICourse[]>;
+}
+
+export const CourseSchema = new Schema<ICourse, CourseModel>({
     name: {type: String, required: true, trim: true, maxLength: 40},
     description: {type: String, required: true, trim: true, maxLength: 200},
-    category: {type: Number, required: true},
-    trainer: {type: String, required: true, trim: true, maxLength: 40},
+    category: {type: String, required: true, trim: true, maxLength: 40},
+    trainer: {type: String, required: true, trim: true, maxLength: 40, ref: 'Trainer'},
     capacity: {type: Number, required: true},
     duration: {type: Number, required: true},
     appointments: [
         {
+            _id: {type: String, required: true, default: () => new mongoose.Types.ObjectId().toString(), unique: true},
             date: {type: Date, required: true},
-            users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+            registrations: [{type: mongoose.Schema.Types.ObjectId, ref: 'Registration'}]
         }
 
     ]
@@ -73,7 +79,7 @@ CourseSchema.methods = {
         appointment.users.pull(userId);
     },
     removeAppointment: function (appointmentId: string) {
-        this.appointments.id(appointmentId).remove();
+        this.appointments = this.appointments.filter((a) => a._id !== appointmentId);
     }
 }
 
@@ -81,7 +87,10 @@ CourseSchema.methods = {
  * Statics
  */
 CourseSchema.statics = {
+    findByTrainer: function (trainerId: string) {
+        return this.find({trainer: trainerId});
+    }
 }
 
 
-export const Course: Model<ICourse> = mongoose.model<ICourse>('Course', CourseSchema);
+export const Course: CourseModel = mongoose.model<ICourse, CourseModel>('Course', CourseSchema);

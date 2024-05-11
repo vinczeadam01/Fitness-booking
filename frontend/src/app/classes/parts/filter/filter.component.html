@@ -1,0 +1,11 @@
+<p fxLayout>
+  <mat-form-field appearance="outline" fxFlexFill>
+    <input matInput [(ngModel)]="search" type="text" placeholder="Search" (input)="searchItems($event)"/>
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+</p>
+<p>
+  <mat-chip-listbox aria-label="Category selection">
+    <mat-chip-option *ngFor="let category of categories" (selectionChange)="filterByCategory(category, $event)">{{ category }}</mat-chip-option>
+  </mat-chip-listbox>
+</p>

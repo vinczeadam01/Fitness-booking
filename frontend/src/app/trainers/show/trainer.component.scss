@@ -1,0 +1,24 @@
+.panel {
+  max-width: 800px;
+  margin: auto;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 20px auto;
+  display: block;
+  box-shadow: 0 4px 15px #dedede;
+  object-fit: cover;
+}
+
+input::file-selector-button {
+  color: #673AB7;
+  background-color: #eae8ff;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

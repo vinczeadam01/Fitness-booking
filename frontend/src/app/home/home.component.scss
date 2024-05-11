@@ -1,0 +1,41 @@
+.banner {
+  border-radius: 10px;
+  height: 400px;
+  background-color: black;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  filter: opacity(0.5);
+  object-fit: cover;
+}
+
+.banner > div {
+  position: relative;
+  z-index: 1;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.banner h1 {
+  font-size: 3rem;
+}
+
+.banner p {
+  font-size: 1.5rem;
+}
+
+.banner button {
+  margin-top: 10px;
+}

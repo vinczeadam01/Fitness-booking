@@ -1,0 +1,47 @@
+<div style="min-height: 100vh; background-color: #fafafa;">
+  <mat-toolbar color="bg-white">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-xs>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="brand">
+        <img src="/assets/img/logo.png" alt="Logo" style="width: 120px; margin-top: 5px;">
+      </span>
+      <div class="desktop-menu" fxShow="true" fxHide.lt-sm fxLayout fxFlex>
+        <div>
+          <a [routerLink]="item.route" mat-button *ngFor="let item of navItems">
+            <mat-icon>{{item.icon}}</mat-icon>
+            {{item.name}}
+          </a>
+        </div>
+        <span class="menu-spacer"></span>
+        <div fxLayout style="gap: 10px;" *ngIf="!isAuthenticated">
+          <a routerLink="/login" mat-raised-button color="p100">Login</a>
+          <a routerLink="/signup" mat-raised-button color="primary">Signup</a>
+        </div>
+        <div fxLayout style="gap: 10px;" *ngIf="isAuthenticated">
+          <a routerLink="/profile" mat-raised-button color="p100">Profile</a>
+          <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav style="min-width: 250px;">
+      <mat-nav-list>
+        <div *ngFor="let item of navItems">
+          <a [routerLink]="item.route" mat-list-item>{{item.name}}</a>
+        </div>
+        <a routerLink="/login" mat-list-item *ngIf="!isAuthenticated">Login</a>
+        <a routerLink="/signup" mat-list-item *ngIf="!isAuthenticated">Signup</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+

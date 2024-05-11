@@ -1,0 +1,21 @@
+<form (ngSubmit)="submit()">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <mat-dialog-content>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="trainerForm.name" name="name">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="trainerForm.description" name="description">
+        </mat-form-field>
+      </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close cdkFocusInitial color="primary" type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,18 @@
+<div class="grid-container">
+  <div class="grid-item" *ngFor="let item of items">
+    <a [routerLink]="['/classes', item._id]">
+      <mat-card>
+        <div class="card-banner">
+          <img src="/assets/img/category-{{item.category.toLowerCase()}}.jpg" alt="category">
+          <div class="bottom-icons">
+            <img src="{{item.trainer.img ?? '/assets/trainer-man.jpg'}}" alt="logo" class="card-logo">
+            <span>{{ item.trainer.name}}</span>
+          </div>
+        </div>
+        <mat-card-content>
+          <mat-card-title>{{ item.name }}</mat-card-title>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  </div>
+</div>
