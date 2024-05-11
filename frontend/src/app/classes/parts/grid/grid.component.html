@@ -4,8 +4,8 @@
       <mat-card>
         <div class="card-banner">
           <img src="/assets/img/category-{{item.category.toLowerCase()}}.jpg" alt="category">
-          <div class="bottom-icons">
-            <img src="{{item.trainer.img ?? '/assets/trainer-man.jpg'}}" alt="logo" class="card-logo">
+          <div class="bottom-icons" *ngIf="item.trainer">
+            <img src="{{item.trainer.img ?? '/assets/img/trainer-man.jpg'}}" alt="logo" class="card-logo">
             <span>{{ item.trainer.name}}</span>
           </div>
         </div>

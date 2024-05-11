@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Request, Response} from 'express';
-import {Course, ICourse} from "../models/Course";
-import {Document} from "mongoose";
+import {Course} from "../models/Course";
 
 export default class CourseController {
     public getCourse: RequestHandler = (req, res, next) => {
@@ -84,6 +83,38 @@ export default class CourseController {
         }).catch(error => {
             res.status(500).send('2');
         });
+    }
+
+    public getPopularCourses: RequestHandler = (req, res, next) => {
+        Course.aggregate([
+            {
+                $unwind: "$appointments"
+            },
+            {
+                $lookup: {
+                    from: "registrations",
+                    localField: "appointments.registrations",
+                    foreignField: "_id",
+                    as: "registrations"
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    name: { $first: "$name" },
+                    category: { $first: "$category" },
+                    registrationCount: { $sum: { $size: "$appointments.registrations" } }
+                }
+            },
+            {
+                $sort: { registrationCount: -1 }
+            },
+            {
+                $limit: 10
+            },
+        ]).then(courses => {
+            res.status(200).send(courses);
+        })
     }
 
 }

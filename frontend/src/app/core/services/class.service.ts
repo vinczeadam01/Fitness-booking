@@ -93,6 +93,12 @@ export class ClassService {
       data,
       {withCredentials: true}
     );
+  }
 
+  getPopular() {
+    return this.http.get(
+      'http://localhost:3000/api/course/popular',
+      {withCredentials: true}
+    );
   }
 }

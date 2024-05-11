@@ -8,6 +8,7 @@ const courseController = new CourseController()
 
 /* COURSE CRUD */
 router.get('/course', courseController.getAllCourses);  // GET /course Get all courses
+router.get('/course/popular', courseController.getPopularCourses);  // GET /course/popular Get popular courses
 router.get('/course/:id', courseController.getCourse);  // GET /course/:id Get a course
 router.post('/course', AuthMiddleware.isAdmin, courseController.createCourse); // POST /course Create a course
 router.put('/course/:id', AuthMiddleware.isAdmin, courseController.updateCourse);  // PUT /course/:id Update a course
