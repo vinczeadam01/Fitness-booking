@@ -9,6 +9,7 @@
           <mat-error *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.errors!['required']">Email is required</mat-error>
           <mat-error *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.errors!['email']">Please enter a valid email.</mat-error>
         </mat-form-field>
+        <span class="text-danger" *ngIf="emailIsUsed">This email is already used!</span>
       </p>
       <p>
         <mat-form-field appearance="outline">

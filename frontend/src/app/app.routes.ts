@@ -17,9 +17,19 @@ export const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile', pathMatch: 'full' },
       { path: 'registrations', loadComponent: () => import('./users/profile/parts/registrations/registrations.component').then((c) => c.RegistrationsComponent), outlet: 'profile' },
-      { path: 'notification', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile' },
-      { path: 'delete', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile' },
+      { path: 'statistics', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile' },
     ],
   },
-
+  {
+    path: 'profile/:id',
+    loadComponent: () => import('./users/profile/profile.component').then((c) => c.ProfileComponent),
+    canActivate: [authGuard],
+    children: [
+      { path: '', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile', pathMatch: 'full' },
+      { path: 'registrations', loadComponent: () => import('./users/profile/parts/registrations/registrations.component').then((c) => c.RegistrationsComponent), outlet: 'profile' },
+      { path: 'statistics', loadComponent: () => import('./users/profile/parts/profil/profil.component').then((c) => c.ProfilComponent), outlet: 'profile' },
+    ],
+  },
+  { path: 'users', loadComponent: () => import('./users/list/list.component').then((c) => c.ListComponent) },
+  { path: '**', redirectTo: '' },
 ];

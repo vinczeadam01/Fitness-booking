@@ -10,6 +10,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FormDialogComponent} from "../parts/form-dialog/form-dialog.component";
 import {AuthService} from "../../core/services/auth.service";
 import {NgIf} from "@angular/common";
+import {AlertService} from "../../core/services/alert.service";
 
 @Component({
   selector: 'app-classes',
@@ -34,7 +35,8 @@ export class ClassesComponent {
   constructor(
     private classService: ClassService,
     public dialog: MatDialog,
-    protected authService: AuthService
+    protected authService: AuthService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -69,6 +71,7 @@ export class ClassesComponent {
     dialogRef.componentInstance.onSuccess.subscribe((res: Class) => {
       this.classes!.push(res);
       this.filteredClasses = this.classes;
+      this.alertService.info('Class created successfully');
     });
   }
 }

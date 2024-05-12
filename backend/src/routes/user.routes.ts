@@ -9,5 +9,6 @@ router.get('/user/:id', userController.getUser)
 router.put('/user/:id', userController.updateUser)
 
 router.get('/user/:id/registrations', userController.getUserRegistrations)
+router.get('/user/:id/favoriteCourses', userController.getUserFavoriteCourses)
 
 export default router;

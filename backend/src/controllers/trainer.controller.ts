@@ -37,7 +37,7 @@ export default class TrainerController {
     public updateTrainer: RequestHandler = (req, res, next) => {
         Trainer.findOneAndUpdate({_id: req.params.id}, {
             name: req.body.name,
-            email: req.body.email
+            description: req.body.description
         }).then(result => {
             res.status(200).send(result);
         }).catch(error => {

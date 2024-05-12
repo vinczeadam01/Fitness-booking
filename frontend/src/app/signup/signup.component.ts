@@ -6,7 +6,8 @@ import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {AlertService} from "../core/services/alert.service";
 
 
 @Component({
@@ -18,11 +19,14 @@ import {RouterLink} from "@angular/router";
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
+  emailIsUsed: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -57,7 +61,10 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       this.authService.signup(this.signupForm.value).subscribe({
         next: (data) => {
+          this.alertService.info('Registration successful, please login.')
+          this.router.navigate(['/login']);
         }, error: (err) => {
+          this.emailIsUsed = true;
           console.log(err);
         }
       });

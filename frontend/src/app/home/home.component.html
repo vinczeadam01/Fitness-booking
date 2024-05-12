@@ -7,5 +7,10 @@
   </div>
 </div>
 
+<div *ngIf="favoriteClasses">
+  <h2 class="mt-5">Favorites</h2>
+  <classes-grid [items]="favoriteClasses" [emptyMessage]="'No registration yet.'"></classes-grid>
+</div>
+
 <h2 class="mt-5">Popular</h2>
 <classes-grid [items]="popularClasses"></classes-grid>

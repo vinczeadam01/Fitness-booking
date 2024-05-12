@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {MatCard, MatCardContent, MatCardImage, MatCardTitle} from "@angular/material/card";
 import {Class} from "../../../core/models/Class";
 import {RouterLink} from "@angular/router";
@@ -13,7 +13,8 @@ import {RouterLink} from "@angular/router";
     MatCardContent,
     MatCardImage,
     MatCardTitle,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.scss'
@@ -21,6 +22,7 @@ import {RouterLink} from "@angular/router";
 export class GridComponent {
 
   @Input() items?: Class[] = [];
+  @Input() emptyMessage: string = 'No classes found';
 
   constructor() { }
 }

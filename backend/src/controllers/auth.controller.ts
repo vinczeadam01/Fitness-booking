@@ -20,10 +20,17 @@ export default class AuthController {
         })(req, res, next);
     };
 
-    public signup = (req: Request, res: Response, next: NextFunction) => {
+    public signup = async (req: Request, res: Response, next: NextFunction) => {
         const email = req.body.email;
         const password = req.body.password;
         const name = req.body.name;
+
+        const existingUser = await User.findOne({email: email});
+        if (existingUser) {
+            res.status(500).send({message: 'User already exists.'});
+            return;
+        }
+
         const user = new User({email: email, password: password, name: name});
         user.save().then(data => {
             res.status(200).send(data);

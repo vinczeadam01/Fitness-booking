@@ -8,8 +8,13 @@ import {Class} from "../../core/models/Class";
 import {GridComponent} from "../../classes/parts/grid/grid.component";
 import {FormsModule} from "@angular/forms";
 import {MatInput} from "@angular/material/input";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {AuthService} from "../../core/services/auth.service";
+import {MatIcon} from "@angular/material/icon";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmModalComponent} from "../../core/components/confirm-modal/confirm-modal.component";
+import {FormDialogComponent} from "../parts/form-dialog/form-dialog.component";
 
 @Component({
   selector: 'app-trainer',
@@ -20,7 +25,12 @@ import {AuthService} from "../../core/services/auth.service";
     GridComponent,
     FormsModule,
     MatInput,
-    MatButton
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger
   ],
   templateUrl: './trainer.component.html',
   styleUrl: './trainer.component.scss'
@@ -33,7 +43,8 @@ export class TrainerComponent {
   constructor(
     private route: ActivatedRoute,
     private trainerService: TrainerService,
-    public authService: AuthService
+    public authService: AuthService,
+    private dialog: MatDialog
     ) {}
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
@@ -52,4 +63,34 @@ export class TrainerComponent {
   }
 
 
+  deleteTrainer() {
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+      data: {
+        title: 'Delete Trainer',
+        message: 'Are you sure you want to delete this trainer?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.trainerService.delete(this.trainer._id).subscribe(() => {
+          window.location.href = '/trainers';
+        });
+      }
+    });
+  }
+
+  openEditDialog() {
+    const dialogRef = this.dialog.open(FormDialogComponent, {
+      data: {
+        trainer: this.trainer
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.trainerService.getOne(this.trainer._id).subscribe(trainer => this.trainer = trainer);
+      }
+    });
+  }
 }

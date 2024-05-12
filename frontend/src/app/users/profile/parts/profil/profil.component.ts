@@ -11,6 +11,8 @@ import {MatInput} from "@angular/material/input";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {NgIf} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
+import {AlertService} from "../../../../core/services/alert.service";
 
 @Component({
   selector: 'app-profil',
@@ -40,18 +42,25 @@ export class ProfilComponent {
     profileForm?: ProfileForm;
     passwordForm: PasswordForm = new PasswordForm();
 
-    constructor(private authService: AuthService, private userService: UserService) { }
+    constructor(
+      private authService: AuthService,
+      private userService: UserService,
+      private route: ActivatedRoute,
+      private alertService: AlertService
+    ) { }
 
     ngOnInit(): void {
-      this.userService.getOne(this.authService.getUserId()).subscribe((user: any) => {
+      const id = this.route.snapshot.paramMap.get('id') ?? this.authService.getUserId();
+      this.userService.getOne(id).subscribe((user: any) => {
         this.user = user;
         this.profileForm = new ProfileForm(user);
       });
     }
 
     submit() {
-      this.userService.update(this.authService.getUserId(), this.profileForm).subscribe((user: any) => {
+      this.userService.update(this.user?._id, this.profileForm).subscribe((user: any) => {
         this.user = user;
+        this.alertService.info('Profile updated');
       });
     }
 
@@ -59,9 +68,7 @@ export class ProfilComponent {
       if (!this.passwordForm.validate()) {
         return;
       }
-
     }
-
 }
 
 class ProfileForm {

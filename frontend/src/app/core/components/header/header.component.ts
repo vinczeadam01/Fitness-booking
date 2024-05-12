@@ -32,11 +32,20 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HeaderComponent {
   title = 'Fitness';
-  navItems = [
+  navItemsUsers = [
     {name: 'Home', route: '/', icon: 'home_outlined'},
     {name: 'Classes', route: '/classes', icon: 'fitness_center'},
     {name: 'Trainers', route: '/trainers', icon: 'person_search'},
   ];
+
+  navItemsAdmin = [
+    {name: 'Home', route: '/', icon: 'home_outlined'},
+    {name: 'Classes', route: '/classes', icon: 'fitness_center'},
+    {name: 'Trainers', route: '/trainers', icon: 'person_search'},
+    {name: 'Users', route: '/users', icon: 'admin_panel_settings'},
+  ];
+
+  navItems = this.navItemsUsers;
   isAuthenticated?: boolean;
 
   constructor(private authService: AuthService) {}
@@ -45,8 +54,14 @@ export class HeaderComponent {
     this.authService.isAuthenticated.subscribe({
       next: (isAuthenticated: boolean) => {
         this.isAuthenticated = isAuthenticated;
+        if (this.authService.isAdmin()) {
+          this.navItems = this.navItemsAdmin;
+        } else {
+          this.navItems = this.navItemsUsers;
+        }
       }
     });
+
   }
 
   logout() {

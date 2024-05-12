@@ -33,10 +33,10 @@ export class AuthService {
 
     req.subscribe({
       next: (data: any) => {
-        this.isAuthenticated.emit(true);
         this.userId = data._id;
         this.role = data.role;
         this.router.navigate(['/']);
+        this.isAuthenticated.emit(true);
       },
       error: (err: any) => {
         this.isAuthenticated.emit(false);
@@ -65,9 +65,9 @@ export class AuthService {
     this.checkAuth().subscribe({
       next: (data: any) => {
         if (data) {
-          this.isAuthenticated.emit(true);
           this.userId = data._id;
           this.role = data.role;
+          this.isAuthenticated.emit(true);
         } else {
           this.isAuthenticated.emit(false);
         }
@@ -88,10 +88,10 @@ export class AuthService {
       {withCredentials: true}
     ).subscribe({
       next: () => {
-        this.isAuthenticated.emit(false);
         this.userId = null;
         this.role = 0;
         this.router.navigate(['/login']);
+        this.isAuthenticated.emit(false);
       }
     })
   }

@@ -1,4 +1,19 @@
 <div class="panel">
+  <div class="float-right" *ngIf="this.authService.isAdmin()">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openEditDialog()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="deleteTrainer()">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+  </div>
   <div fxLayout fxLayoutGap="20">
     <div>
       <img class="avatar" [src]="trainer.img ?? '/assets/img/trainer-man.jpg'" alt="Trainer">

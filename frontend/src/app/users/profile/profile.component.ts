@@ -21,27 +21,17 @@ import {MatButton} from "@angular/material/button";
 })
 export class ProfileComponent {
 
-  user: User | null = null;
+  userId: string | null = null;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id') ?? this.authService.getUserId();
-    if (!id) {
-      console.error('No user id provided');
-      return;
-    }
-    this.userService.getOne(id).subscribe({
-      next: (user: any) => {
-        this.user = user;
-      },
-      error: (err: any) => {
-        console.error(err);
-      }
-    });
+    this.userId = this.route.snapshot.paramMap.get('id');
+
   }
 
 }

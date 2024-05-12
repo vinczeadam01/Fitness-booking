@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="grid-container">
+<div class="grid-container" *ngIf="filteredItems && filteredItems.length; else noItemsTemplate;">
   <div class="grid-item" *ngFor="let item of filteredItems">
     <a [routerLink]="['/trainers', item._id]">
       <mat-card>
@@ -26,3 +26,7 @@
     </a>
   </div>
 </div>
+<ng-template #noItemsTemplate>
+  <p>No trainers found.</p>
+</ng-template>
+

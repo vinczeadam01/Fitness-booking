@@ -49,4 +49,19 @@ export class TrainerService {
       {withCredentials: true}
     );
   }
+
+  delete(trainerId: any) {
+    return this.http.delete(
+      `http://localhost:3000/api/trainer/${trainerId}`,
+      {withCredentials: true}
+    );
+  }
+
+  update(trainerId: any, trainer: Trainer) {
+    return this.http.put(
+      `http://localhost:3000/api/trainer/${trainerId}`,
+      trainer,
+      {withCredentials: true}
+    );
+  }
 }

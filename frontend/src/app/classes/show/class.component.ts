@@ -25,6 +25,8 @@ import {ConfirmModalComponent} from "../../core/components/confirm-modal/confirm
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {AuthService} from "../../core/services/auth.service";
 import {MatPaginator} from "@angular/material/paginator";
+import {ViewAppointmentDialogComponent} from "../parts/view-appointment-dialog/view-appointment-dialog.component";
+import {AlertService} from "../../core/services/alert.service";
 
 @Component({
   selector: 'app-class',
@@ -66,6 +68,7 @@ export class ClassComponent {
   appointmentsDataSource = new MatTableDataSource<Appointment>([]);
   appointmentsDisplayColumnsUser: string[] = ['date', 'freeSpaces', 'actionUser'];
   appointmentsDisplayColumnsAdmin: string[] = ['date', 'freeSpaces', 'actionAdmin'];
+  appointmentsDisplayColumnsGuest: string[] = ['date', 'freeSpaces'];
 
   appointmentsDisplayColumns: string[] = [];
 
@@ -75,17 +78,22 @@ export class ClassComponent {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.classService.getById(id).subscribe((data: Class) => {
       this.class = data;
-
-      this.appointmentsDisplayColumns = this.authService.isAdmin() ? this.appointmentsDisplayColumnsAdmin : this.appointmentsDisplayColumnsUser;
       this.appointmentsDataSource.data = this.class.appointments;
     });
+
+    if (!this.authService.getUserId()) {
+      this.appointmentsDisplayColumns = this.appointmentsDisplayColumnsGuest;
+    } else {
+      this.appointmentsDisplayColumns = this.authService.isAdmin() ? this.appointmentsDisplayColumnsAdmin : this.appointmentsDisplayColumnsUser;
+    }
   }
 
   openAppointmentDialog(appointment?: Appointment) {
@@ -102,10 +110,12 @@ export class ClassComponent {
       if (index !== undefined && index !== -1) {
         if (this.class) {
           this.class.appointments = this.class.appointments.map((a, i) => i === index ? res : a);
+          this.alertService.info('Appointment updated');
         }
       } else {
         if (this.class) {
           this.class.appointments = [...this.class.appointments, res];
+          this.alertService.info('Appointment added');
         }
       }
 
@@ -120,6 +130,7 @@ export class ClassComponent {
           appointment.registrations.push({user: this.authService.getUserId()});
         }
         this.class.appointments = [...this.class.appointments];
+        this.alertService.info('Signed up for appointment');
       }
     });
   }
@@ -132,6 +143,7 @@ export class ClassComponent {
           appointment.registrations = appointment.registrations.filter((r: any) => r.user !== this.authService.getUserId());
         }
         this.class.appointments = [...this.class.appointments];
+        this.alertService.info('Canceled appointment');
       }
     });
   }
@@ -150,6 +162,7 @@ export class ClassComponent {
           if (this.class) {
             this.class.appointments = this.class.appointments.filter((a) => a._id !== appointmentId);
           }
+          this.alertService.info('Appointment deleted');
         });
       }
     });
@@ -165,6 +178,7 @@ export class ClassComponent {
 
     dialogRef.componentInstance.onSuccess.subscribe((res: Class) => {
       this.class = res;
+      this.alertService.info('Class updated');
     });
   }
 
@@ -190,6 +204,11 @@ export class ClassComponent {
   }
 
   viewAppointment(_id: any) {
-    
+    this.dialog.open(ViewAppointmentDialogComponent, {
+      width: '500px',
+      data: {
+        appointmentId: _id
+      }
+    });
   }
 }

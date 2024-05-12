@@ -7,7 +7,7 @@ import {
   MatColumnDef,
   MatHeaderCell,
   MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef,
   MatTable
 } from "@angular/material/table";
 import {DatePipe} from "@angular/common";
@@ -16,6 +16,7 @@ import {MatButton} from "@angular/material/button";
 import {Registration} from "../../../../core/models/Registration";
 import {ClassService} from "../../../../core/services/class.service";
 import {resolve} from "@angular/compiler-cli";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-registrations',
@@ -33,7 +34,9 @@ import {resolve} from "@angular/compiler-cli";
     MatRowDef,
     DatePipe,
     MatPaginator,
-    MatButton
+    MatButton,
+    RouterLink,
+    MatNoDataRow
   ],
   templateUrl: './registrations.component.html',
   styleUrl: './registrations.component.scss'
@@ -49,10 +52,12 @@ export class RegistrationsComponent {
     private userService: UserService,
     private authService: AuthService,
     private classService: ClassService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.userService.getRegistrations(this.authService.getUserId()).subscribe(
+    const id = this.route.parent?.snapshot.paramMap.get('id') ?? this.authService.getUserId();
+    this.userService.getRegistrations(id).subscribe(
       (registrations) => {
         this.registrations = registrations;
 

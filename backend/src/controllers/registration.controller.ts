@@ -60,4 +60,11 @@ export default class RegistrationController {
             res.status(500).send(false);
         });
     }
+    getRegistrationsForAppointment: RequestHandler = (req: Request, res, next) => {
+        Registration.find({appointmentId: req.params.id}).populate('user').then(registrations => {
+            res.status(200).send(registrations);
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    };
 }

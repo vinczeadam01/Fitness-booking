@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Participants</h1>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let registration of registrations">
+      <div fxLayout fxLayoutAlign="space-between center">
+        <span mat-line>{{registration.user.name}}</span>
+        <button mat-button color="warn" (click)="removeRegistration(registration._id)">Remove</button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

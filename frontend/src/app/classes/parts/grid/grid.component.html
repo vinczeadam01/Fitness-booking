@@ -1,4 +1,4 @@
-<div class="grid-container">
+<div class="grid-container" *ngIf="items && items.length; else noItemsTemplate">
   <div class="grid-item" *ngFor="let item of items">
     <a [routerLink]="['/classes', item._id]">
       <mat-card>
@@ -16,3 +16,7 @@
     </a>
   </div>
 </div>
+
+<ng-template #noItemsTemplate>
+  <p>{{emptyMessage}}</p>
+</ng-template>

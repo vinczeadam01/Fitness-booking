@@ -88,7 +88,7 @@ CourseSchema.methods = {
  */
 CourseSchema.statics = {
     findByTrainer: function (trainerId: string) {
-        return this.find({trainer: trainerId});
+        return this.find({trainer: trainerId}).populate('trainer');
     }
 }
 

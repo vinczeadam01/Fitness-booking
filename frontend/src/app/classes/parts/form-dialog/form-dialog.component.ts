@@ -53,7 +53,7 @@ export class FormDialogComponent {
   ) { }
 
   ngOnInit(): void {
-    if (this.data.class) {
+    if (this.data && this.data.class) {
       this.title = 'Edit Class';
       this.classForm = {
         name: this.data.class.name,
@@ -76,7 +76,7 @@ export class FormDialogComponent {
   }
 
   submit() {
-    if (this.data.class) {
+    if (this.data && this.data.class) {
       this.classService.update(this.data.class._id, this.classForm).subscribe((res: Class) => {
         this.onSuccess.emit(res);
         this.dialogRef.close();

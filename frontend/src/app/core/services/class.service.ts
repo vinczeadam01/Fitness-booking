@@ -101,4 +101,18 @@ export class ClassService {
       {withCredentials: true}
     );
   }
+
+  getParticipantsForAppointment(appointmentId: string) {
+    return this.http.get<any[]>(
+`http://localhost:3000/api/registration/appointment/${appointmentId}`,
+      {withCredentials: true}
+    );
+  }
+
+  deleteRegistration(id: string) {
+    return this.http.delete(
+      `http://localhost:3000/api/registration/${id}`,
+      {withCredentials: true}
+    );
+  }
 }

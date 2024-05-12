@@ -1,5 +1,6 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import RolesConfig from "../configs/roles.config";
 
 export interface IUser extends Document {
     email: string;
@@ -19,7 +20,7 @@ export const UserSchema = new Schema({
     email: {type: String, required: true, unique: true, trim: true,maxLength: 40},
     password: {type: String, required: true},
     name: {type: String, required: true, trim: true, maxLength: 40},
-    role: {type: Number, default: 0},
+    role: {type: Number, default: RolesConfig.USER},
     birthdate: {type: Date},
     points: {type: Number, default: 0},
     createdAt: { type: Date, default: Date.now },
