@@ -47,22 +47,24 @@ export class FormDialogComponent {
   ) { }
 
   ngOnInit(): void {
-    if (this.data.trainer) {
+    if (this.data && this.data.trainer) {
       this.trainerForm = this.data.trainer;
       this.title = 'Edit Trainer';
     }
   }
 
   submit() {
-    if (this.data.trainer) {
+    if (this.data && this.data.trainer) {
       this.trainerService.update(this.data.trainer._id, this.trainerForm as Trainer).subscribe((res) => {
         console.log(res);
+        this.dialogRef.close(true);
       });
       return;
 
     }
     this.trainerService.create(this.trainerForm as Trainer).subscribe((res) => {
       console.log(res);
+      this.dialogRef.close(true);
     });
   }
 

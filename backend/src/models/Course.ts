@@ -25,7 +25,7 @@ interface CourseModel extends Model<ICourse> {
 
 export const CourseSchema = new Schema<ICourse, CourseModel>({
     name: {type: String, required: true, trim: true, maxLength: 40},
-    description: {type: String, required: true, trim: true, maxLength: 200},
+    description: {type: String, required: true, trim: true, maxLength: 2000},
     category: {type: String, required: true, trim: true, maxLength: 40},
     trainer: {type: String, required: true, trim: true, maxLength: 40, ref: 'Trainer'},
     capacity: {type: Number, required: true},

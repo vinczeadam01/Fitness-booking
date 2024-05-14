@@ -78,10 +78,10 @@ export default class CourseController {
             course.save().then(course => {
                 res.status(200).send(course);
             }).catch(error => {
-                res.status(500).send('1');
+                res.status(500).send(error);
             });
         }).catch(error => {
-            res.status(500).send('2');
+            res.status(500).send(error);
         });
     }
 

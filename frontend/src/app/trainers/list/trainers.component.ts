@@ -66,10 +66,16 @@ export class TrainersComponent {
     }
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(FormDialogComponent, {
+    const dialogRef = this.dialog.open(FormDialogComponent, {
       width: '500px',
       enterAnimationDuration,
       exitAnimationDuration,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.ngOnInit();
+      }
     });
   }
 }
